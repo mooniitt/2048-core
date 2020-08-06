@@ -1,9 +1,20 @@
+interface IListener {
+  [propName: string]: () => void;
+}
+
+interface ILoc {
+  i: number;
+  j: number;
+}
+
 class Core {
   private map: Array<Array<number>>;
   private size: number;
+  private listeners: IListener;
   constructor(size: number) {
     this.size = size;
     this.map = Core.generateMap(size);
+    this.listeners = {};
   }
 
   static generateMap(size: number) {
@@ -40,7 +51,9 @@ class Core {
     let zeroIndex = -1;
     for (let i = 0; i < line.length; i++) {
       if (line[i] !== 0 && zeroIndex !== -1) {
-        [line[zeroIndex], line[i]] = [line[i], line[zeroIndex]];
+        const tmp = line[i];
+        line[i] = line[zeroIndex];
+        line[zeroIndex] = tmp;
         zeroIndex += 1;
       }
       if (zeroIndex === -1 && line[i] === 0) {
@@ -74,9 +87,53 @@ class Core {
     }
     return map;
   }
+  static generate2or4() {
+    return (Core.getRandomInt(2) + 1) * 2;
+  }
+
+  static appendNum(map: number[][]) {
+    const zeorMap: ILoc[] = [];
+    for (let i = 0; i < map.length; i++) {
+      for (let j = 0; j < map.length; j++) {
+        if (map[i][j] === 0) {
+          zeorMap.push({ i, j });
+        }
+      }
+    }
+    if (!zeorMap.length) {
+      return false;
+    }
+    const randomIndex: number = Core.getRandomInt(zeorMap.length);
+    const { i, j } = zeorMap[randomIndex];
+    map[i][j] = Core.generate2or4();
+    return true;
+  }
+
+  addEventListener(name: string, callback: () => void = () => {}) {
+    this.listeners[name] = callback;
+  }
+
+  triggerListener(name: string) {
+    this.listeners[name] && this.listeners[name]();
+  }
+
+  appendNumIntoMap() {
+    const ok = Core.appendNum(this.map);
+    if (!ok) {
+      this.autoRun();
+    }
+  }
+
+  // 执行所有监听事件
+  autoRun() {
+    Object.keys(this.listeners).forEach(key => {
+      this.listeners[key]();
+    });
+  }
 
   mergeMap() {
-    return Core.merge(this.map);
+    Core.merge(this.map);
+    this.appendNumIntoMap();
   }
 
   getMap() {

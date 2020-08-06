@@ -1,3 +1,4 @@
+import { mockRandomForEach } from "jest-mock-random";
 import Core from "./core";
 
 test("size is 4", () => {
@@ -35,55 +36,41 @@ test("rotateMap():size=2 map", () => {
     [3, 1],
     [4, 2]
   ];
-  expect(Core.rotateMap(origin).toString()).toBe(after.toString());
+  expect(Core.rotateMap(origin)).toMatchObject(after);
 });
 
 test("rotateMap():size=4 map", () => {
-  const origin = [
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-    [13, 14, 15, 16]
-  ];
-  const after = [
+  expect(
+    Core.rotateMap([
+      [1, 2, 3, 4],
+      [5, 6, 7, 8],
+      [9, 10, 11, 12],
+      [13, 14, 15, 16]
+    ])
+  ).toMatchObject([
     [13, 9, 5, 1],
     [14, 10, 6, 2],
     [15, 11, 7, 3],
     [16, 12, 8, 4]
-  ];
-  expect(Core.rotateMap(origin).toString()).toBe(after.toString());
+  ]);
 });
 
 test("pleaseOutZero() remove front zero", () => {
-  expect(Core.pleaseOutZero([2, 0, 2, 2]).toString()).toBe(
-    [2, 2, 2, 0].toString()
-  );
-  expect(Core.pleaseOutZero([0, 2, 0, 2]).toString()).toBe(
-    [2, 2, 0, 0].toString()
-  );
+  expect(Core.pleaseOutZero([2, 0, 2, 2])).toMatchObject([2, 2, 2, 0]);
+  expect(Core.pleaseOutZero([0, 2, 0, 2])).toMatchObject([2, 2, 0, 0]);
 });
 
 test("numPlus tow num plus", () => {
-  expect(Core.numPlus([2, 0, 2, 2]).toString()).toBe([4, 0, 0, 2].toString());
-  expect(Core.numPlus([0, 2, 0, 2]).toString()).toBe([0, 4, 0, 0].toString());
+  expect(Core.numPlus([2, 0, 2, 2])).toMatchObject([4, 0, 0, 2]);
+  expect(Core.numPlus([0, 2, 0, 2])).toMatchObject([0, 4, 0, 0]);
 });
 
 test("mergeOneLine() test one line array's merge is OK?", () => {
-  expect(Core.mergeOneLine([2, 2, 2, 2]).toString()).toBe(
-    [4, 4, 0, 0].toString()
-  );
-  expect(Core.mergeOneLine([2, 2, 4, 4]).toString()).toBe(
-    [4, 8, 0, 0].toString()
-  );
-  expect(Core.mergeOneLine([2, 0, 2, 4]).toString()).toBe(
-    [4, 4, 0, 0].toString()
-  );
-  expect(Core.mergeOneLine([0, 0, 4, 4]).toString()).toBe(
-    [8, 0, 0, 0].toString()
-  );
-  expect(Core.mergeOneLine([0, 2, 0, 2]).toString()).toBe(
-    [4, 0, 0, 0].toString()
-  );
+  expect(Core.mergeOneLine([2, 2, 2, 2])).toMatchObject([4, 4, 0, 0]);
+  expect(Core.mergeOneLine([2, 2, 4, 4])).toMatchObject([4, 8, 0, 0]);
+  expect(Core.mergeOneLine([2, 0, 2, 4])).toMatchObject([4, 4, 0, 0]);
+  expect(Core.mergeOneLine([0, 0, 4, 4])).toMatchObject([8, 0, 0, 0]);
+  expect(Core.mergeOneLine([0, 2, 0, 2])).toMatchObject([4, 0, 0, 0]);
 });
 
 test("merge() test mutiline to merge is OK?", () => {
@@ -104,13 +91,18 @@ test("rotateMap() and merge() together is OK?", () => {
         [2, 2, 4, 4],
         [2, 0, 2, 2]
       ])
-    ).toString()
-  ).toBe(
-    [
-      [4, 4, 8, 4],
-      [2, 8, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ].toString()
-  );
+    )
+  ).toMatchObject([
+    [4, 4, 8, 4],
+    [2, 8, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ]);
 });
+
+// TODO
+// describe("test random useage", () => {
+//   it("generate2or4() is OK?", () => {
+//     expect([Core.generate2or4(), Core.generate2or4()]).toEqual([2, 4]);
+//   });
+// });
