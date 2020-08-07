@@ -2,5 +2,5 @@
   "compilerOptions": {
     "declaration": true
   },
-  "files": ["src/core.ts"]
+  "include": ["src"]
 }

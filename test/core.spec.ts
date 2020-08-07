@@ -1,5 +1,5 @@
 import { mockRandomForEach } from "jest-mock-random";
-import Core from "./core";
+import Core from "../src/core";
 
 test("size is 4", () => {
   const core = new Core(4);

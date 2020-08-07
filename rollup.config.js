@@ -6,7 +6,7 @@ import { terser } from "rollup-plugin-terser";
 export default {
   input: "./src/core.ts",
   output: {
-    file: "./lib/index.js",
+    file: "./lib/core.js",
     format: "esm"
   },
   plugins: [typescript(), eslint(), filesize(), terser()]
