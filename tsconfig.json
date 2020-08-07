@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "declaration": true
+  },
+  "files": ["src/core.ts"]
+}

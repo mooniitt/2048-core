@@ -1,0 +1,35 @@
+import { ILoc, Map } from "./interface";
+declare class Core {
+    private map;
+    private size;
+    private listeners;
+    constructor(size?: number);
+    static generateMap(size: number): Map;
+    static getRandomInt(max: number): number;
+    static rotateMap(map: Map): Map;
+    static pleaseOutZero(line: number[]): number[];
+    static numPlus(line: number[]): number[];
+    static mergeOneLine(line: number[]): number[];
+    static merge(map: Map): Map;
+    static generate2or4(): number;
+    static appendNum(map: Map): boolean;
+    static dfsMap(map: Map): boolean;
+    static isOver(map: Map): boolean;
+    addEventListener(name: string, callback?: () => void): void;
+    triggerListener(name: string): void;
+    appendNumIntoMap(): void;
+    autoRun(): void;
+    mergeMap(): void;
+    getMap(): Map;
+    init(): ILoc;
+    start(): void;
+    restart(): void;
+    clear(): void;
+    score(): number;
+    rotate(time?: number): void;
+    leftMoving(): void;
+    rightMoving(): void;
+    topMoving(): void;
+    bottomMoving(): void;
+}
+export default Core;

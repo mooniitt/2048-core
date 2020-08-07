@@ -1,13 +1,4 @@
-interface IListener {
-  [propName: string]: () => void;
-}
-
-interface ILoc {
-  i: number;
-  j: number;
-}
-
-type Map = Array<Array<number>>;
+import { IListener, ILoc, Map } from "./interface";
 
 class Core {
   private map: Map;
