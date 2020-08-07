@@ -7,17 +7,20 @@ interface ILoc {
   j: number;
 }
 
+type Map = Array<Array<number>>;
+
 class Core {
-  private map: Array<Array<number>>;
+  private map: Map;
   private size: number;
   private listeners: IListener;
-  constructor(size: number) {
+
+  constructor(size: number = 4) {
     this.size = size;
     this.map = Core.generateMap(size);
     this.listeners = {};
   }
 
-  static generateMap(size: number) {
+  static generateMap(size: number): Map {
     let genMap = [];
     for (let i = 0; i < size; i++) {
       genMap[i] = [];
@@ -28,10 +31,10 @@ class Core {
     return genMap;
   }
 
-  static getRandomInt(max: number) {
+  static getRandomInt(max: number): number {
     return Math.floor(Math.random() * Math.floor(max));
   }
-  static rotateMap(map: number[][]) {
+  static rotateMap(map: Map): Map {
     const matrix = map;
     let n = matrix.length;
     let limit = (n - 1) / 2;
@@ -47,7 +50,7 @@ class Core {
     return map;
   }
 
-  static pleaseOutZero(line: number[]) {
+  static pleaseOutZero(line: number[]): number[] {
     let zeroIndex = -1;
     for (let i = 0; i < line.length; i++) {
       if (line[i] !== 0 && zeroIndex !== -1) {
@@ -62,7 +65,7 @@ class Core {
     }
     return line;
   }
-  static numPlus(line: number[]) {
+  static numPlus(line: number[]): number[] {
     let previous = 0;
     for (let i = 0; i < line.length; i++) {
       if (previous !== i && line[i] !== 0) {
@@ -81,17 +84,17 @@ class Core {
     return Core.pleaseOutZero(Core.numPlus(line));
   }
 
-  static merge(map: number[][]) {
+  static merge(map: Map): Map {
     for (let i = 0; i < map.length; i++) {
       Core.mergeOneLine(map[i]);
     }
     return map;
   }
-  static generate2or4() {
+  static generate2or4(): number {
     return (Core.getRandomInt(2) + 1) * 2;
   }
 
-  static appendNum(map: number[][]) {
+  static appendNum(map: Map): boolean {
     const zeorMap: ILoc[] = [];
     for (let i = 0; i < map.length; i++) {
       for (let j = 0; j < map.length; j++) {
@@ -109,49 +112,79 @@ class Core {
     return true;
   }
 
-  addEventListener(name: string, callback: () => void = () => {}) {
+  static dfsMap(map: Map): boolean {
+    const size = map.length;
+    let isOver: boolean = true;
+    const dfs = function(i: number, j: number) {
+      if (isOver === false) return;
+      if (i >= size || j >= size) return;
+      if (i + 1 < size && map[i][j] === map[i + 1][j]) {
+        return (isOver = false);
+      }
+      if (j + 1 < size && map[i][j] === map[i][j + 1]) {
+        return (isOver = false);
+      }
+      dfs(i + 1, j);
+      dfs(i, j + 1);
+    };
+    dfs(0, 0);
+    return isOver;
+  }
+
+  static isOver(map: Map): boolean {
+    return Core.dfsMap(map);
+  }
+
+  addEventListener(name: string, callback: () => void = () => {}): void {
     this.listeners[name] = callback;
   }
 
-  triggerListener(name: string) {
+  triggerListener(name: string): void {
     this.listeners[name] && this.listeners[name]();
   }
 
-  appendNumIntoMap() {
-    const ok = Core.appendNum(this.map);
-    if (!ok) {
+  appendNumIntoMap(): void {
+    if (!Core.appendNum(this.map) && Core.isOver(this.map)) {
       this.autoRun();
     }
   }
 
   // 执行所有监听事件
-  autoRun() {
+  autoRun(): void {
     Object.keys(this.listeners).forEach(key => {
       this.listeners[key]();
     });
   }
 
-  mergeMap() {
+  mergeMap(): void {
     Core.merge(this.map);
     this.appendNumIntoMap();
   }
 
-  getMap() {
+  getMap(): Map {
     return this.map;
   }
 
   // 初始化
-  init() {
-    const x = Core.getRandomInt(this.size);
-    const y = Core.getRandomInt(this.size);
-    this.map[x][y] = 2;
-    return { x, y };
+  init(): ILoc {
+    const i = Core.getRandomInt(this.size);
+    const j = Core.getRandomInt(this.size);
+    this.map[i][j] = 2;
+    return { i, j };
+  }
+  start(): void {
+    this.init();
+  }
+
+  restart(): void {
+    this.clear();
+    this.init();
   }
   // 清除
   clear() {
     this.map = Core.generateMap(this.size);
   }
-  score() {
+  score(): number {
     let total = 0;
     for (let i = 0; i < this.size; i++) {
       for (let j = 0; j < this.size; j++) {
@@ -162,7 +195,7 @@ class Core {
   }
 
   // 顺时针旋转数组
-  rotate(time: number = 1) {
+  rotate(time: number = 1): void {
     while (time) {
       Core.rotateMap(this.map);
       time--;

@@ -7,10 +7,10 @@ test("size is 4", () => {
   expect(new Core(4).getMap()[0].toString()).toBe([0, 0, 0, 0].toString());
 });
 
-test("init() map[x,y] = 2 and return {x,y} ", () => {
+test("init() map[i][j] = 2 and return {i,j} ", () => {
   const core = new Core(10);
-  const { x, y } = core.init();
-  expect(core.getMap()[x][y]).toBe(2);
+  const { i, j } = core.init();
+  expect(core.getMap()[i][j]).toBe(2);
 });
 
 test("score() get the map of score", () => {
@@ -98,6 +98,22 @@ test("rotateMap() and merge() together is OK?", () => {
     [0, 0, 0, 0],
     [0, 0, 0, 0]
   ]);
+});
+
+test("dfsMap() is Ok?", () => {
+  expect(
+    Core.dfsMap([
+      [0, 2],
+      [2, 4]
+    ])
+  ).toBeTruthy();
+
+  expect(
+    Core.dfsMap([
+      [4, 4],
+      [8, 2]
+    ])
+  ).toBeFalsy();
 });
 
 // TODO
