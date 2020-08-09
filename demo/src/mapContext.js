@@ -1,7 +1,9 @@
 import Core from "2048-core";
-import React, { Children } from "react";
+import React from "react";
 
 const core = new Core();
-const MapContext = React.createContext();
+core.init();
+
+const MapContext = React.createContext(core);
 
 export { core, MapContext };

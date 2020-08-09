@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { MapContext, core } from "./mapContext";
 
 ReactDOM.render(
-  <MapContext.Provider value={core.getMap()}>
+  <MapContext.Provider value={core}>
     <App />
   </MapContext.Provider>,
   document.getElementById("root")
