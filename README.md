@@ -35,7 +35,7 @@ core.restart()
 // core.clear()
 // core.start()
 
-core.addEventListens(name,callback)
+core.addEventListens([name?:string],callback)
 // 游戏结束后执行的回调
 
 core.leftMoving()

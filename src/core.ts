@@ -106,7 +106,7 @@ class Core {
   static dfsMap(map: Map): boolean {
     const size = map.length;
     let isOver: boolean = true;
-    const dfs = function(i: number, j: number) {
+    const dfs = function (i: number, j: number) {
       if (isOver === false) return;
       if (i >= size || j >= size) return;
       if (i + 1 < size && map[i][j] === map[i + 1][j]) {
@@ -126,7 +126,10 @@ class Core {
     return Core.dfsMap(map);
   }
 
-  addEventListener(name: string, callback: () => void = () => {}): void {
+  addEventListener(name?: string, callback: () => void = () => {}): void {
+    if (typeof name !== "string") {
+      callback = name;
+    }
     this.listeners[name] = callback;
   }
 
@@ -142,7 +145,7 @@ class Core {
 
   // 执行所有监听事件
   autoRun(): void {
-    Object.keys(this.listeners).forEach(key => {
+    Object.keys(this.listeners).forEach((key) => {
       this.listeners[key]();
     });
   }
