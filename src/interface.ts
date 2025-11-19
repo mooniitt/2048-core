@@ -1,10 +1,9 @@
-export declare interface IListener {
-  [propName: string]: () => void;
-}
-
-export declare interface ILoc {
+export type Map = number[][];
+export interface ILoc {
   i: number;
   j: number;
 }
-
-export declare type Map = Array<Array<number>>;
+export type EventHandler = () => void;
+export interface IListener {
+  [key: string]: EventHandler[];
+}
