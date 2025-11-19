@@ -1,3 +1,5 @@
+import { IListener, ILoc, Map } from "./interface";
+
 /**
  * Core.ts
  */
